@@ -23,11 +23,9 @@ services:
     volumes:
       - ./tests:/tests:delegated
       # Framework testing
-      # Application testing
-      - ..:/app/web:delegated
+      # Application
+      - ${CODE_PATH_LOCAL}:${CODE_PATH_DIST}:delegated
       # Composer cache
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
-    # stdin_open: true
-    # tty: true
     networks:
       - backend
