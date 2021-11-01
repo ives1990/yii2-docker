@@ -1,11 +1,19 @@
 version: '2.2'
 services:
   web:
-    image: phundament/nginx-one:1.9-5.1.1
+    build:
+      context: ./nginx
+    image: local/phundament/nginx-one
     environment:
       - FASTCGI_PASS_HOST=php
     ports:
-      - '8100:80'
+      - '80:80'
     volumes:
       # Application testing
-      - ./_host-volumes/app/web:/app/web:delegated
+      - ..:/app/web:delegated
+      - ./nginx/conf/conf.d:/etc/nginx/conf.d:delegated
+      - ./nginx/log:/var/log/nginx:delegated
+    depends_on:
+        - php
+    networks:
+      - backend

@@ -3,3 +3,5 @@
 _host-volumes
 
 \.idea/
+.DS_Store
+nginx/log/*

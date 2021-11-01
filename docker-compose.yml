@@ -1,4 +1,9 @@
 version: '2.2'
+
+networks:
+  backend:
+    driver: bridge
+
 services:
 
   php:
@@ -18,8 +23,11 @@ services:
     volumes:
       - ./tests:/tests:delegated
       # Framework testing
-      - ./_host-volumes/yii2:/yii2:delegated
       # Application testing
-      - ./_host-volumes/app:/app:delegated
+      - ..:/app/web:delegated
       # Composer cache
       - ~/.composer-docker/cache:/root/.composer/cache:delegated
+    # stdin_open: true
+    # tty: true
+    networks:
+      - backend
