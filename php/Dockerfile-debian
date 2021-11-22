@@ -4,10 +4,15 @@
 ARG PHP_BASE_IMAGE_VERSION
 FROM php:${PHP_BASE_IMAGE_VERSION}
 
+# Set TimeZone
+ENV TZ Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
 # Install system packages for PHP extensions recommended for Yii 2.0 Framework
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 RUN echo "deb https://mirrors.aliyun.com/debian  stable main contrib non-free" > /etc/apt/sources.list && \
     echo "deb https://mirrors.aliyun.com/debian  stable-updates main contrib non-free" >> /etc/apt/sources.list && \
+        apt-get update -y && \
         install-php-extensions \
         soap \
         zip \
@@ -23,7 +28,7 @@ RUN echo "deb https://mirrors.aliyun.com/debian  stable main contrib non-free" >
         pdo_pgsql \
         imagick \
         mongodb \
-        xdebug
+        xdebug > /dev/null
 
 # Disable xdebug by default (see PHP_ENABLE_XDEBUG)
 RUN rm /usr/local/etc/php/conf.d/docker-php-ext-xdebug.ini
@@ -59,6 +64,15 @@ RUN if command -v a2enmod >/dev/null 2>&1; then \
 #RUN mkdir /etc/bash_completion.d && \
 #    curl -L https://raw.githubusercontent.com/yiisoft/yii2/master/contrib/completion/bash/yii \
 #         -o /etc/bash_completion.d/yii
+
+# Add cron & supervisor
+#RUN apt update -y && \
+#    apt-get install -y vim && \
+#    apt-get install -y cron && \
+#    apt-get install -y supervisor
+#COPY ./crontab /etc/cron.d
+#COPY ./supervisor /etc/supervisor/conf.d
+#RUN chmod -R 644 /etc/cron.d && cron && supervisord -n
 
 # Application environment
 WORKDIR /app

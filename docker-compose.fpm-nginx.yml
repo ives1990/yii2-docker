@@ -12,7 +12,6 @@ services:
       # Application
       - ${CODE_PATH_LOCAL}:${CODE_PATH_DIST}:delegated
       # Nginx
-      - ./nginx/conf/conf.d:/etc/nginx/conf.d:delegated
       - ./nginx/log:/var/log/nginx:delegated
     depends_on:
         - php

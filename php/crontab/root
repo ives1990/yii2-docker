@@ -1,0 +1,6 @@
+#拉取tpp基础数据
+1 */4 * * * /usr/bin/php /app/web/ta-api/yii system/task-tpp 
+#绩效消息推送
+* * * * * /usr/bin/php /app/web/ta-api/yii message-tpp/push-tpp
+
+* * * * * echo 'hell' >> /app/demo.txt
